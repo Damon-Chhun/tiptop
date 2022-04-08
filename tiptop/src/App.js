@@ -4,9 +4,12 @@ import Shop from "./screens/Shop/index.jsx";
 import Login from "./screens/Login/index.jsx";
 import Checkout from "./screens/Checkout/index.jsx";
 
+import NavBar from "./components/NavBar";
+
 function App() {
   return (
     <div>
+      <NavBar />
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="shop/*" element={<Shop />} />
