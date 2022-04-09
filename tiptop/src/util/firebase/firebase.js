@@ -8,7 +8,14 @@ import {
 } from "firebase/auth";
 
 //firestore methods
-import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  collection,
+  writeBatch,
+} from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyD6VLwgt56QbOBloCpiX1YC5u4XLNWLCwg",
@@ -74,4 +81,20 @@ export const createAuthUserWithEmailAndPassword = async (email, password) => {
   if (!email || !password) return;
 
   return await createUserWithEmailAndPassword(auth, email, password);
+};
+
+export const addCollectionAndDocuments = async (
+  collectionKey,
+  objectsToAdd
+) => {
+  const collectionRef = collection(database, collectionKey);
+  const batch = writeBatch(database);
+
+  objectsToAdd.forEach((itemTypeObj) => {
+    const docRef = doc(collectionRef, itemTypeObj.department.toLowerCase());
+    batch.set(docRef, itemTypeObj);
+  });
+
+  await batch.commit();
+  console.log("successful batch ");
 };
