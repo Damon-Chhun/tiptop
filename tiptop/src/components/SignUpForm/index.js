@@ -1,14 +1,21 @@
 import React from "react";
-import { Paper, TextField, Button } from "@mui/material";
+import {
+  Paper,
+  TextField,
+  Button,
+  getCardActionAreaUtilityClass,
+} from "@mui/material";
 import { useState } from "react";
 import * as Styled from "./index.styled";
-import { Link } from "react-router-dom";
-import {
-  createAuthUserWithEmailAndPassword,
-  createUserDocFromAuth,
-} from "../../util/firebase/firebase";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { signUp } from "../../store/user/user";
+import { selectUser } from "../../store/user/user.selector";
+import { getCart } from "../../store/cart/cart";
 
 const SignUpForm = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const defaultFormFields = {
     email: "",
     firstName: "",
@@ -18,7 +25,7 @@ const SignUpForm = () => {
   };
   const [formField, setFormField] = useState(defaultFormFields);
 
-  const { email, firstName, lastName, password, confirmPassword } = formField;
+  const { password, confirmPassword } = formField;
 
   function resetFormFields() {
     setFormField(defaultFormFields);
@@ -31,7 +38,6 @@ const SignUpForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formField);
 
     if (password !== confirmPassword) {
       alert("passwords do not match");
@@ -39,13 +45,9 @@ const SignUpForm = () => {
     }
 
     try {
-      const { user } = await createAuthUserWithEmailAndPassword(
-        email,
-        password
-      );
-      const displayName = `${firstName} ${lastName}`;
-      await createUserDocFromAuth(user, { displayName });
+      dispatch(signUp(formField));
       resetFormFields();
+      navigate("/");
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {
         alert("Cannot create use, email already in use");

@@ -2,9 +2,15 @@ import React from "react";
 import { Paper, TextField, Button } from "@mui/material";
 import { useState } from "react";
 import * as Styled from "./index.styled";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { signInAuthUserWithEmailAndPassword } from "../../util/firebase/firebase";
+import { signIn } from "../../store/user/user";
 
 const LoginForm = ({ logGoogleUser }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const defaultFormFields = {
     email: "",
     password: "",
@@ -14,12 +20,17 @@ const LoginForm = ({ logGoogleUser }) => {
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormField({ ...formField, [name]: value });
-    console.log(formField);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formField);
+    try {
+      dispatch(signIn(formField));
+
+      navigate("/");
+    } catch (error) {
+      console.log(error, "error signing in");
+    }
     //redirect to somewhere and firebase auth
   };
 
@@ -50,7 +61,7 @@ const LoginForm = ({ logGoogleUser }) => {
         />
         <Button onClick={logGoogleUser}>Sign In With Google!</Button>
 
-        <Button>Login</Button>
+        <Button type="submit">Login</Button>
 
         <Link exact to="/register">
           Register
