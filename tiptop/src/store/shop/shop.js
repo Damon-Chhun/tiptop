@@ -1,35 +1,68 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { getShopAndDocuments } from "../../util/firebase/firebase";
+import {
+  getDepartmentItems,
+  getShopAndDocuments,
+} from "../../util/firebase/firebase";
 
 export const getShopData = createAsyncThunk("shop/getShopData", async () => {
   console.log(getShopAndDocuments(), "sdfsdf");
   return getShopAndDocuments();
 });
 
+export const getFilterShopData = createAsyncThunk(
+  "shop/filterShop",
+  async (args) => {
+    const { department } = args;
+    console.log(department);
+    return await getDepartmentItems(department);
+  }
+);
+
 export const shopSlice = createSlice({
   name: "shop",
   initialState: {
-    shopData: {
-      hat: [],
-      laptop: [],
-      menclothes: [],
-      phone: [],
-      shoes: [],
-      womenclothes: [],
-    },
+    shopData: null,
+    filterShop: null,
     isLoading: null,
   },
   reducers: {},
   extraReducers: {
     [getShopData.pending]: (state, action) => {
-      state.isLoading = true;
+      return {
+        ...state,
+        isLoading: true,
+      };
     },
     [getShopData.fulfilled]: (state, { payload }) => {
-      state.shopData = payload;
-      state.isLoading = "false";
+      return {
+        ...state,
+        shopData: payload,
+      };
     },
     [getShopData.rejected]: (state) => {
-      state.isLoading = "false";
+      return {
+        ...state,
+        isLoading: false,
+      };
+    },
+    [getFilterShopData.pending]: (state, action) => {
+      return {
+        ...state,
+        isLoading: true,
+      };
+    },
+    [getFilterShopData.fulfilled]: (state, { payload }) => {
+      return {
+        ...state,
+        filterShop: payload,
+        isLoading: false,
+      };
+    },
+    [getFilterShopData.rejected]: (state) => {
+      return {
+        ...state,
+        isLoading: false,
+      };
     },
   },
 });

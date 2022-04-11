@@ -1,7 +1,6 @@
 import React from "react";
-import { AppBar, Toolbar, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
-import { styled } from "@mui/material/styles";
+import { Typography } from "@mui/material";
+import { ShoppingCart } from "@mui/icons-material";
 
 import * as Styled from "./index.styled";
 
@@ -14,10 +13,13 @@ const NavBar = () => {
             <Typography variant="h4">TipTop</Typography>
           </Styled.LinkHomeStyled>
           <Styled.LinkContainerStyled>
-            <Styled.LinkStyled to="shop/*">Shop</Styled.LinkStyled>
+            <Styled.LinkStyled to="shop/">Shop</Styled.LinkStyled>
             <Styled.LinkStyled to="login/">Login</Styled.LinkStyled>
             <Styled.LinkStyled to="checkout/">Checkout</Styled.LinkStyled>
           </Styled.LinkContainerStyled>
+          <div style={{ width: "33%", textAlign: "center" }}>
+            <ShoppingCart />
+          </div>
         </Styled.ToolBarStyled>
       </Styled.AppBarStyled>
     </div>

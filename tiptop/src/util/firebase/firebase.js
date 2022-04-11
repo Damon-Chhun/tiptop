@@ -100,7 +100,7 @@ export const addCollectionAndDocuments = async (
   const batch = writeBatch(database);
 
   objectsToAdd.forEach((itemTypeObj) => {
-    const docRef = doc(collectionRef, itemTypeObj.department.toLowerCase());
+    const docRef = doc(collectionRef, itemTypeObj.title.toLowerCase());
     batch.set(docRef, itemTypeObj);
   });
 
@@ -124,6 +124,19 @@ export const getShopAndDocuments = async () => {
   }, {});
 
   return categoryMap;
+};
+
+export const getDepartmentItems = async (depart) => {
+  console.log(depart);
+  const docRef = doc(database, "shop", depart);
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    return docSnap.data();
+  } else {
+    // doc.data() will be undefined in this case
+    console.log("No such document!");
+  }
 };
 
 //create cart document
