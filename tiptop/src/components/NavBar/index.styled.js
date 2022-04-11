@@ -22,6 +22,7 @@ export const LinkHomeStyled = styled(Link, {
 })({
   textDecoration: "none",
   color: "#FFFFFF",
+  width: "33%",
 });
 
 export const LinkStyled = styled(Link, {
@@ -37,4 +38,5 @@ export const LinkContainerStyled = styled("div")({
   height: "100%",
   display: "flex",
   justifyContent: "space-around",
+  width: "33%",
 });
